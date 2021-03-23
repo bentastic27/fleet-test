@@ -8,6 +8,7 @@ metadata:
   namespace: fleet-local
 spec:
   repo: https://github.com/bentastic27/fleet-test
+  branch: main
   paths:
   - one
   - two
