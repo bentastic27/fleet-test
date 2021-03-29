@@ -1,0 +1,58 @@
+{{- if .Values.certs -}}
+{{- if .Values.certs.issuer -}}
+{{- if .Values.certs.issuer.enabled -}}
+#####################################################################################
+# This is an example of a namespace-specific certificate issuer for the cert-manager
+# service. --NOT ALL OF THE INFORMATION IS FILLED IN BY THE TEMPLATE--. This can act
+# as a starting point to help teams leverage the service if necessary.
+#
+## Create the secret with the following:
+# kubectl -n {{ template "namespace.fullname" . }} create secret generic {{ template "namespace.fullname" . }}-route53-secret --from-literal=secret-access-key="<SECRET KEY>"
+## Apply this file:
+# kubectl -n {{ template "namespace.fullname" . }} apply -f cert-issuer.yaml
+#####################################################################################
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Issuer
+metadata:
+  name: letsencrypt-{{ template "namespace.fullname" . }}-pod
+  namespace: {{ template "namespace.fullname" . }}
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: {{ .Values.contact.email }}
+    privateKeySecretRef:
+      name: letsencrypt-{{ template "namespace.fullname" . }}-prod
+    dns01:
+      providers:
+      - name: {{ template "namespace.fullname" . }}-route53
+        route53:
+          accessKeyID: {{ required "A valid certs.issuer.accessKeyID is required" .Values.certs.issuer.accessKeyID }}
+          region: {{ default .Values.certs.issuer.region "us-east-1" }}
+          secretAccessKeySecretRef:
+            key: secret-access-key
+            name: {{ template "namespace.fullname" . }}-route53-secret
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Issuer
+metadata:
+  name: letsencrypt-{{ template "namespace.fullname" . }}-staging
+  namespace: {{ template "namespace.fullname" . }}
+spec:
+  acme:
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    email: {{ .Values.contact.email }}
+    privateKeySecretRef:
+      name: letsencrypt-{{ template "namespace.fullname" . }}-staging
+    dns01:
+      providers:
+      - name: {{ template "namespace.fullname" . }}-route53
+        route53:
+          accessKeyID: {{ required "A valid certs.issuer.accessKeyID is required" .Values.certs.issuer.accessKeyID }}
+          region: {{ default .Values.certs.issuer.region "us-east-1" }}
+          secretAccessKeySecretRef:
+            key: secret-access-key
+            name: {{ template "namespace.fullname" . }}-route53-secret
+{{- end }}
+{{- end }}
+{{- end }}

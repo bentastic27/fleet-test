@@ -1,0 +1,13 @@
+{{- if .Values.backups.enabled }}
+apiVersion: velero.io/v1
+kind: Schedule
+metadata:
+  name: {{ template "namespace.fullname" . }}-backup
+  namespace: chimera-velero
+spec:
+  schedule: {{ .Values.backups.schedule }} 
+  template:
+    includedNamespaces:
+    - {{ template "namespace.fullname" . }}
+    ttl: {{ .Values.backups.ttl }}
+{{- end }}

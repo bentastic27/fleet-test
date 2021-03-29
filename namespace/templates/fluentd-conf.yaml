@@ -1,0 +1,29 @@
+{{- if .Values.fluentd }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluentd-config
+  namespace: {{ template "namespace.fullname" . }}
+data:
+  fluent.conf: |-
+    <match $labels(app=log-router)>
+      @type null
+    </match>
+
+    <match **>
+      @type copy
+    {{- range .Values.fluentd.cloudwatch }}
+      <store>
+        {{- if .roleArn }}
+        aws_use_sts true
+        aws_sts_role_arn {{ .roleArn }}
+        {{- end }}
+        @type cloudwatch_logs
+        log_group_name {{ .groupName }}
+        log_stream_name {{ .streamName }}
+        auto_create_stream true
+        region {{ .region }}
+      </store>
+    {{- end }}
+    </match>
+{{end}}

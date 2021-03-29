@@ -1,0 +1,32 @@
+# This hook depends on helm creating the target namespace if it doesn't exist
+# before the hook is called. This is the case on Helm v2.9.1
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: annotate-ns-{{ template "namespace.fullname" . }}
+  namespace: kube-system
+  labels:
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  ttlSecondsAfterFinished: 100
+  template:
+    spec:
+      containers:
+      - name: annotater
+        image: gcr.io/google_containers/hyperkube:v1.9.7
+        command:
+        - kubectl
+        - annotate
+        - ns
+        - {{ template "namespace.fullname" . }}
+        {{- if .Values.chimeraManaged }}
+        - iam.amazonaws.com/permitted=chimera-*
+        {{- else if .Values.kiamOverride }}
+        - iam.amazonaws.com/permitted={{ .Values.kiamOverride }}
+        {{- else }}
+        - iam.amazonaws.com/permitted={{ template "namespace.fullname" . }}/.*
+        {{- end}}
+        - --overwrite
+      restartPolicy: Never
+      serviceAccountName: namespace-labeler

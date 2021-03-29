@@ -1,0 +1,26 @@
+{{- if .Values.certs -}}
+{{- if .Values.certs.wildcard -}}
+{{- if .Values.certs.wildcard.enabled -}}
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: {{ template "namespace.fullname" . }}-wildcard
+spec:
+  secretName: {{ template "namespace.fullname" . }}-wildcard-tls
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-prod-dns
+  commonName: "*.{{ required "A valid .Values.certs.wildcard.domain entry required!" .Values.certs.wildcard.domain }}"
+  dnsNames:
+    - {{ .Values.certs.wildcard.domain }}
+    - "*.{{ .Values.certs.wildcard.domain }}"
+  acme:
+    config:
+    - dns01:
+        provider: prod-route53
+      domains:
+        - {{ .Values.certs.wildcard.domain }}
+        - "*.{{ .Values.certs.wildcard.domain }}"
+{{- end }}
+{{- end }}
+{{- end }}
