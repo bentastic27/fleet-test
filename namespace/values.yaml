@@ -63,4 +63,4 @@ tier: Production ## Dev|Production|Critical
 ## Keycloak group base
 ##   This is the base group that should be used. Ex: if "group-base=chimera", users in the keycloak group "chimera" will have read-only access to this namespace. 
 ##   Users in the group "chimera/chimera-admin" will have admin access to this namespace.
-## keycloakGroupBase: <keycloak group> ## REQUIRED
+keycloakGroupBase: "blah"
