@@ -2,7 +2,7 @@ defaultnamespace: chimera-loki
 helm:
   releaseName: loki-namespace
   repo: "http://134.209.123.139:8082/artifactory/helm"
-  chart: "namespace"
+  chart: "namespace-2.0.0.tgz"
   version: 2.0.0
   values:
     contact:
