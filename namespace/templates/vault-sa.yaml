@@ -1,8 +1,0 @@
----
-{{- if or (.Values.chimeraManaged) (.Values.vaultSecretAuto) }}
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: {{ template "namespace.fullname" . }}-vault
-  namespace: {{ template "namespace.fullname" . }}
-{{- end }}
