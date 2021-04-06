@@ -11,4 +11,4 @@ helm:
     samId: "123qwe"
     chimeraManaged: true
     fullnameOverride: chimera-loki
-    clusterID: "c-h4m5h
+    clusterID: "c-h4m5h"
