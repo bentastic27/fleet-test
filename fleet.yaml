@@ -2,7 +2,7 @@ targetCustomizations:
 - name: sc-hwinf-01
   clusterSelector:
     matchLabels:
-      name: sc-hwinf-01
+      management.cattle.io/cluster-display-name: custom
   yaml:
     overlays:
     - sc-hwinf-01
