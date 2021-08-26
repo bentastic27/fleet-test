@@ -1,0 +1,4 @@
+subjects:
+- kind: ServiceAccount
+  name: infcloud
+  namespace: kube-ops

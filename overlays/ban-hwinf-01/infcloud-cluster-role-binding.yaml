@@ -1,0 +1,4 @@
+subjects:
+- kind: ServiceAccount
+  name: infcloud
+  namespace: hwinf-k8s-production-ban
