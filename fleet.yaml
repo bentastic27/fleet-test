@@ -6,14 +6,14 @@ targetCustomizations:
   yaml:
     overlays:
     - sc-hwinf-01
--name: rno-hwinf-01
+- name: rno-hwinf-01
   clusterSelector:
     matchLabels:
       name: rno-hwinf-01
   yaml:
     overlays:
     - rno-hwinf-01
--name: ban-hwinf-01
+- name: ban-hwinf-01
   clusterSelector:
     matchLabels:
       name: ban-hwinf-01
