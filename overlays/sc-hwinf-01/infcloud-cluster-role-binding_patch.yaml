@@ -1,4 +1,0 @@
-subjects:
-- kind: ServiceAccount
-  name: infcloud
-  namespace: default

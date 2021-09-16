@@ -1,0 +1,10 @@
+defaultNamespace: default
+targetCustomizations:
+- name: custom
+  yaml:
+    overlays:
+    - custom
+  clusterSelector:
+    matchLabels:
+      management.cattle.io/cluster-display-name: custom
+      
